@@ -1,10 +1,5 @@
-"""Simple Harry Potter RAG API exercise.
-
-Task: complete every TODO in this file, then run the API and test /query.
-"""
 
 import os
-
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,11 +9,6 @@ from sentence_transformers import SentenceTransformer
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-
-
-# TASK
-# Complete TODO 1, TODO 2, TODO 3, and TODO 4.
-# Then run the API and test retrieve, chitchat, and off-topic questions.
 
 
 # ============================= Setup =============================
@@ -33,7 +23,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# TODO 1: Add these values to your .env file and load them here.
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION")
@@ -109,8 +98,7 @@ def health():
 def query_rag(request: QueryRequest):
 
 
-    # TODO 2: Write a prompt that returns only one of these words:
-    # retrieve, chitchat, or off-topic.
+
     ROUTER_SYSTEM_PROMPT = """You are a query router for a Harry Potter books chatbot.
 
 Classify the user's message into exactly one of these categories:
@@ -140,7 +128,6 @@ off-topic"""
 
     if route == "chitchat":
 
-        # TODO 3: Write a short, friendly prompt for Harry Potter chitchat.
         CHITCHAT_SYSTEM_PROMPT = """You are a friendly Harry Potter chatbot. Respond naturally and briefly to greetings, thanks, goodbyes, and casual conversation. Be warm and helpful, and keep the conversation related to Harry Potter when appropriate. Do not provide detailed book information or invent facts."""
 
         response = groq_llm.invoke([
@@ -182,8 +169,7 @@ off-topic"""
         for result in results
     )
 
-    # TODO 4: Write a prompt that answers only from the provided context.
-    # Tell the model to say "I do not know" when the context is not enough.
+
     RAG_SYSTEM_PROMPT = """You are a Harry Potter books chatbot. Answer the user's question using only the provided context from the Harry Potter books. If the answer cannot be found or determined from the provided context, say: "I do not know based on the provided context." Do not use outside knowledge. Do not make up or assume facts. Keep the answer clear, concise, and friendly."""
 
     response = gemini_llm.invoke([
